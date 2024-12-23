@@ -12,14 +12,15 @@ DB_USER=$2
 DB_HOST=${3:-localhost}          # Optional: Defaults to 'localhost' if not provided
 DB_PORT=${4:-5432}               # Optional: Defaults to '5432' if not provided
 BACKUP_DIR=${5:-/backups}        # Optional: Defaults to '/backups' if not provided
-
+# shellcheck disable=SC2034
+CURRENT_DIR=$(pwd)
 # Generate the backup filename
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
-BACKUP_FILE="$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.dump"
+BACKUP_FILE="$CURRENT_DIR/$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.dump"
 
 # Ensure the backup directory exists
 
-mkdir -p "$BACKUP_DIR"
+mkdir -p "$CURRENT_DIR/$BACKUP_DIR"
 if [ $? -ne 0 ]; then
     echo "Failed to create directory: $BACKUP_DIR"
     exit 1

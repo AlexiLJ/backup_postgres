@@ -18,6 +18,7 @@ TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 BACKUP_FILE="$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.dump"
 
 # Ensure the backup directory exists
+echo "Checking directory"
 mkdir -p "$BACKUP_DIR"
 
 # Create the database dump in custom format (.dump)

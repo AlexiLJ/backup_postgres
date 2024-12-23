@@ -8,10 +8,11 @@ fi
 
 # Get parameters
 DB_NAME=$1                       # The first argument is the database name
-DB_USER=$2                        
-DB_HOST=${3:-localhost}          # Optional: Defaults to 'localhost' if not provided
-DB_PORT=${4:-5432}               # Optional: Defaults to '5432' if not provided
-BACKUP_DIR=${5:-/backups}        # Optional: Defaults to '/backups' if not provided
+DB_USER=$2
+DB_PASSWORD=$3
+DB_HOST=${4:-localhost}          # Optional: Defaults to 'localhost' if not provided
+DB_PORT=${5:-5432}               # Optional: Defaults to '5432' if not provided
+BACKUP_DIR=${6:-/backups}        # Optional: Defaults to '/backups' if not provided
 # shellcheck disable=SC2034
 CURRENT_DIR=$(pwd)
 # Generate the backup filename
@@ -28,7 +29,7 @@ fi
 echo "Directory created successfully: $BACKUP_DIR"
 # Create the database dump in custom format (.dump)
 echo "Starting backup for database: $DB_NAME"
-pg_dump -U "$DB_USER" -h "$DB_HOST" -p "$DB_PORT" -F c -f "$BACKUP_FILE" "$DB_NAME"
+pg_dump -U "$DB_USER" -h "$DB_HOST" -p "$DB_PORT" --password="$DB_PASSWORD" -F c -f "$BACKUP_FILE" "$DB_NAME"
 
 # Check if the dump was successful
 if [ $? -eq 0 ]; then

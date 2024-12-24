@@ -48,7 +48,10 @@ def upload_to_s3(file_path, bucket_name, directory, region="us-east-1"):
         s3_key = f"{directory}/{file_name}" if directory else file_name
 
         # Create an S3 client
-        s3_client = boto3.client('s3', region_name=region)
+        s3_client = boto3.client('s3',
+                                 aws_access_key_id=var_getter('AWS_ACCESS_KEY_ID'),
+                                 aws_secret_access_key=var_getter('AWS_SECRET_ACCESS_KEY'),
+                                 region_name=region)
 
         # Upload the file
         s3_client.upload_file(file_path, bucket_name, s3_key)
@@ -86,3 +89,9 @@ if __name__ == "__main__":
     # Print the output
     if output:
         print("Script Output:\n", output)
+
+    upload_to_s3(file_path=output,
+                 bucket_name=var_getter('AWS_STORAGE_BUCKET_NAME'),
+                 directory='pg_backups',
+                 region=var_getter('AWS_S3_REGION_NAME')
+                 )

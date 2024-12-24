@@ -33,7 +33,8 @@ PGPASSWORD="$DB_PASSWORD" pg_dump -U "$DB_USER" -h "$DB_HOST" -p "$DB_PORT" -F c
 
 # Check if the dump was successful
 if [ $? -eq 0 ]; then
-    echo "Backup successful! File saved to: $BACKUP_FILE"
+    echo "Backup successful! File saved to: "
+    echo "$BACKUP_FILE"
 else
     echo "Backup failed!"
     exit 1

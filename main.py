@@ -1,4 +1,6 @@
 import subprocess
+import boto3
+from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 from env_handler import var_getter
 
 def run_bash_script(script_path, *args):
@@ -22,6 +24,53 @@ def run_bash_script(script_path, *args):
         return None
 
 
+
+
+
+def upload_to_s3(file_path, bucket_name, directory, region="us-east-1"):
+    """
+    Uploads a file to a specific directory in an S3 bucket.
+
+    Args:
+        file_path (str): Path to the local file to upload.
+        bucket_name (str): Name of the S3 bucket.
+        directory (str): The directory (prefix) in the S3 bucket where the file should be uploaded.
+        region (str): AWS region of the S3 bucket (default is 'us-east-1').
+
+    Returns:
+        str: The S3 URL of the uploaded file if successful.
+    """
+    try:
+        # Extract the file name from the local file path
+        file_name = file_path.split("/")[-1]
+
+        # Construct the full S3 key (directory + file name)
+        s3_key = f"{directory}/{file_name}" if directory else file_name
+
+        # Create an S3 client
+        s3_client = boto3.client('s3', region_name=region)
+
+        # Upload the file
+        s3_client.upload_file(file_path, bucket_name, s3_key)
+
+        # Generate the S3 URL
+        s3_url = f"https://{bucket_name}.s3.{region}.amazonaws.com/{s3_key}"
+        print(f"File uploaded successfully to {s3_url}")
+        return s3_url
+
+    except FileNotFoundError:
+        print(f"Error: The file {file_path} was not found.")
+    except NoCredentialsError:
+        print("Error: AWS credentials not found.")
+    except PartialCredentialsError:
+        print("Error: Incomplete AWS credentials.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+# Example usage:
+# upload_to_s3("path/to/local/file.txt", "my-bucket-name", "folder/subfolder")
+
 # Example usage
 if __name__ == "__main__":
     # Replace with the actual path to your bash script
@@ -29,10 +78,11 @@ if __name__ == "__main__":
 
     # Example arguments to the script
 
-    arguments = [var_getter('POSTGRESQL_NAME'), var_getter('POSTGRESQL_USER'), var_getter('POSTGRESQL_PASSWORD')]
+    arguments = [var_getter('POSTGRESQL_NAME'),
+                 var_getter('POSTGRESQL_USER'),
+                 var_getter('POSTGRESQL_PASSWORD')]
     # Run the script and get the output
     output = run_bash_script(script_path, *arguments)
-
     # Print the output
     if output:
         print("Script Output:\n", output)

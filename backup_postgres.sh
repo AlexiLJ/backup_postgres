@@ -29,8 +29,7 @@ fi
 echo "Directory created successfully: $BACKUP_DIR"
 # Create the database dump in custom format (.dump)
 echo "Starting backup for database: $DB_NAME"
-export PGPASSWORD="$DB_PASSWORD"
-pg_dump -U "$DB_USER" -h "$DB_HOST" -p "$DB_PORT" -F c -f "$BACKUP_FILE" "$DB_NAME"
+PGPASSWORD="$DB_PASSWORD" pg_dump -U "$DB_USER" -h "$DB_HOST" -p "$DB_PORT" -F c -f "$BACKUP_FILE" "$DB_NAME"
 
 # Check if the dump was successful
 if [ $? -eq 0 ]; then

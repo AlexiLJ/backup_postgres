@@ -17,7 +17,7 @@ BACKUP_DIR=${6:-/backups}        # Optional: Defaults to '/backups' if not provi
 CURRENT_DIR=$(pwd)
 # Generate the backup filename
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
-BACKUP_FILE="$CURRENT_DIR/$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.dump"
+BACKUP_FILE="$CURRENT_DIR$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.dump"
 
 # Ensure the backup directory exists
 

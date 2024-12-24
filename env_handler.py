@@ -32,7 +32,7 @@ def var_getter(name: str):
     :return: Any
     '''
     branch = get_active_branch_name()
-    pathes = Path(__file__).parent.resolve() / "config.yaml"
+    pathes = Path(__file__).parent.resolve() / "pathes.json"
     with open(pathes, "r") as p:
         storage = json.load(p).get(branch)  # environment variables
     with open(Path(storage)) as st:

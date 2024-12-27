@@ -70,7 +70,7 @@ def upload_to_s3(file_path, bucket_name, directory, region="us-east-1"):
 
 if __name__ == "__main__":
     # Replace with the actual path to your bash script
-    script_path = "./backup_postgres.sh"
+    script_path = "/home/alex/backup_postgres/backup_postgres.sh"
 
     # Example arguments to the script
     arguments = [var_getter('POSTGRESQL_NAME', path='/home/alex/backup_postgres'),

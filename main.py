@@ -87,7 +87,7 @@ if __name__ == "__main__":
         print("Script Output:\n", matches)
 
     upload_to_s3(file_path=matches[0],
-                 bucket_name=var_getter('AWS_STORAGE_BUCKET_NAME'),
+                 bucket_name=var_getter('AWS_STORAGE_BUCKET_NAME', path='/home/alex/backup_postgres'),
                  directory='pg_backups',
-                 region=var_getter('AWS_S3_REGION_NAME')
+                 region=var_getter('AWS_S3_REGION_NAME', path='/home/alex/backup_postgres')
                  )

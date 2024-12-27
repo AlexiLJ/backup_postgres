@@ -47,8 +47,8 @@ def upload_to_s3(file_path, bucket_name, directory, region="us-east-1"):
 
         # Create an S3 client
         s3_client = boto3.client('s3',
-                                 aws_access_key_id=var_getter('AWS_ACCESS_KEY_ID'),
-                                 aws_secret_access_key=var_getter('AWS_SECRET_ACCESS_KEY'),
+                                 aws_access_key_id=var_getter('AWS_ACCESS_KEY_ID', path='/home/alex/backup_postgres'),
+                                 aws_secret_access_key=var_getter('AWS_SECRET_ACCESS_KEY', path='/home/alex/backup_postgres'),
                                  region_name=region)
 
         # Upload the file

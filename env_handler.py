@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-def get_git_parent_dir():
+def get_git_parent_dir(path):
     # cwd = list(Path.cwd().parts) # getting splitted cwd dir
     # if search_start not in cwd:
     #     raise Exception(f'No parent dir: {search_start} detected')
@@ -9,13 +9,13 @@ def get_git_parent_dir():
     #     if path_part != search_start:
     #         cwd.pop()
     #     break
-    return Path.cwd() / '.git'
+    return Path.cwd(path) / '.git'
 
-def get_active_branch_name() -> str:
+def get_active_branch_name(path) -> str:
     """
     :return: str
     """
-    hidden_dir = get_git_parent_dir() / "HEAD"
+    hidden_dir = get_git_parent_dir(path) / "HEAD"
     hidden_dir.chmod(0o444)
     with open(hidden_dir) as f:
         content = f.read().splitlines()
@@ -24,14 +24,14 @@ def get_active_branch_name() -> str:
             return line.partition("refs/heads/")[2]
 
 
-def var_getter(name: str):
+def var_getter(name: str, path):
     '''
     Getting sys. variables based on the git branch
     :param name: str name of the sys. variable
     :param storage: str|None
     :return: Any
     '''
-    branch = get_active_branch_name()
+    branch = get_active_branch_name(path)
     pathes = Path(__file__).parent.resolve() / "pathes.json"
     with open(pathes, "r") as p:
         storage = json.load(p).get(branch)  # environment variables

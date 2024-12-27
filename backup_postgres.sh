@@ -14,10 +14,10 @@ DB_HOST=${4:-localhost}          # Optional: Defaults to 'localhost' if not prov
 DB_PORT=${5:-5432}               # Optional: Defaults to '5432' if not provided
 BACKUP_DIR=${6:-/backups}        # Optional: Defaults to '/backups' if not provided
 # shellcheck disable=SC2034
-CURRENT_DIR=$(pwd)
+#CURRENT_DIR=$(pwd)
 # Generate the backup filename
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
-BACKUP_FILE="$CURRENT_DIR$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.dump"
+BACKUP_FILE="/home/alex/backup_postgres/$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.dump"
 
 # Ensure the backup directory exists
 

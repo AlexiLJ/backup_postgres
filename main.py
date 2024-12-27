@@ -1,3 +1,4 @@
+import re
 import subprocess
 import boto3
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError
@@ -22,10 +23,6 @@ def run_bash_script(script_path, *args):
         print("Error executing script:", e)
         print("Error Output:\n", e.stderr)
         return None
-
-
-
-
 
 def upload_to_s3(file_path, bucket_name, directory, region="us-east-1"):
     """
@@ -80,17 +77,20 @@ if __name__ == "__main__":
     script_path = "./backup_postgres.sh"
 
     # Example arguments to the script
-
     arguments = [var_getter('POSTGRESQL_NAME'),
                  var_getter('POSTGRESQL_USER'),
                  var_getter('POSTGRESQL_PASSWORD')]
+
     # Run the script and get the output
     output = run_bash_script(script_path, *arguments)
     # Print the output
     if output:
         print("Script Output:\n", output)
+        pattern = r"(/home[^ ]*?/backup_postgres[^ ]*?\.dump)"
+        matches = re.findall(pattern, output)
+        print("Script Output:\n", matches)
 
-    upload_to_s3(file_path=output,
+    upload_to_s3(file_path=matches[0],
                  bucket_name=var_getter('AWS_STORAGE_BUCKET_NAME'),
                  directory='pg_backups',
                  region=var_getter('AWS_S3_REGION_NAME')

@@ -9,7 +9,8 @@ def get_git_parent_dir(path):
     #     if path_part != search_start:
     #         cwd.pop()
     #     break
-    return Path(path) / '.git'
+    p = Path(path) / '.git'
+    return p.absolute()
 
 def get_active_branch_name(path) -> str:
     """

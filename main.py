@@ -73,9 +73,9 @@ if __name__ == "__main__":
     script_path = "./backup_postgres.sh"
 
     # Example arguments to the script
-    arguments = [var_getter('POSTGRESQL_NAME', path='/backup_postgres'),
-                 var_getter('POSTGRESQL_USER', path='/backup_postgres'),
-                 var_getter('POSTGRESQL_PASSWORD', path='/backup_postgres')]
+    arguments = [var_getter('POSTGRESQL_NAME', path='/home/alex/backup_postgres'),
+                 var_getter('POSTGRESQL_USER', path='/home/alex/backup_postgres'),
+                 var_getter('POSTGRESQL_PASSWORD', path='/home/alex/backup_postgres')]
 
     # Run the script and get the output
     output = run_bash_script(script_path, *arguments)

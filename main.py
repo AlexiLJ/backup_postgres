@@ -1,7 +1,7 @@
 import re
 import subprocess
-# import boto3
-# from botocore.exceptions import NoCredentialsError, PartialCredentialsError
+import boto3
+from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 from env_handler import var_getter
 from pathlib import Path
 
@@ -77,7 +77,9 @@ if __name__ == "__main__":
     # Example arguments to the script
     arguments = [var_getter('POSTGRESQL_NAME', path=parent_path),
                  var_getter('POSTGRESQL_USER', path=parent_path),
-                 var_getter('POSTGRESQL_PASSWORD', path=parent_path)]
+                 var_getter('POSTGRESQL_PASSWORD', path=parent_path),
+                 str(parent_path)
+                ]
 
     # Run the script and get the output
     output = run_bash_script(script_path, *arguments)

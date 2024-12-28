@@ -1,11 +1,11 @@
 import re
 import subprocess
-import boto3
-from botocore.exceptions import NoCredentialsError, PartialCredentialsError
+# import boto3
+# from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 from env_handler import var_getter
 from pathlib import Path
 
-parent_path = Path(__file__).resolve().parents[:-2]
+parent_path = Path(__file__).resolve().parent
 print(parent_path)
 
 def run_bash_script(script_path, *args):

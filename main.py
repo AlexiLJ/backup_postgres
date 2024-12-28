@@ -2,8 +2,11 @@ import re
 import subprocess
 import boto3
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError
-
 from env_handler import var_getter
+from pathlib import Path
+
+parent_path = Path(__file__).resolve().parents[:-2]
+print(parent_path)
 
 def run_bash_script(script_path, *args):
     """
@@ -13,11 +16,10 @@ def run_bash_script(script_path, *args):
     :return: The standard output of the bash script
     """
     try:
-        # Build the command
         command = ["bash", script_path] + list(args)
         # Run the bash script and capture its output
         result = subprocess.run(command, check=True, text=True, capture_output=True)
-        # Return the script's output
+        # Return the script's standard output
         return result.stdout.strip()
 
     except subprocess.CalledProcessError as e:
@@ -47,8 +49,8 @@ def upload_to_s3(file_path, bucket_name, directory, region="us-east-1"):
 
         # Create an S3 client
         s3_client = boto3.client('s3',
-                                 aws_access_key_id=var_getter('AWS_ACCESS_KEY_ID', path='/home/alex/backup_postgres'),
-                                 aws_secret_access_key=var_getter('AWS_SECRET_ACCESS_KEY', path='/home/alex/backup_postgres'),
+                                 aws_access_key_id=var_getter('AWS_ACCESS_KEY_ID', path=parent_path),
+                                 aws_secret_access_key=var_getter('AWS_SECRET_ACCESS_KEY', path=parent_path),
                                  region_name=region)
 
         # Upload the file
@@ -70,12 +72,12 @@ def upload_to_s3(file_path, bucket_name, directory, region="us-east-1"):
 
 if __name__ == "__main__":
     # Replace with the actual path to your bash script
-    script_path = "/home/alex/backup_postgres/backup_postgres.sh"
+    script_path = parent_path / 'backup_postgres.sh'
 
     # Example arguments to the script
-    arguments = [var_getter('POSTGRESQL_NAME', path='/home/alex/backup_postgres'),
-                 var_getter('POSTGRESQL_USER', path='/home/alex/backup_postgres'),
-                 var_getter('POSTGRESQL_PASSWORD', path='/home/alex/backup_postgres')]
+    arguments = [var_getter('POSTGRESQL_NAME', path=parent_path),
+                 var_getter('POSTGRESQL_USER', path=parent_path),
+                 var_getter('POSTGRESQL_PASSWORD', path=parent_path)]
 
     # Run the script and get the output
     output = run_bash_script(script_path, *arguments)
@@ -86,8 +88,8 @@ if __name__ == "__main__":
         matches = re.findall(pattern, output)
         print("Script Output:\n", matches)
 
-    upload_to_s3(file_path=matches[0],
-                 bucket_name=var_getter('AWS_STORAGE_BUCKET_NAME', path='/home/alex/backup_postgres'),
-                 directory='pg_backups',
-                 region=var_getter('AWS_S3_REGION_NAME', path='/home/alex/backup_postgres')
-                 )
+        upload_to_s3(file_path=matches[0],
+                     bucket_name=var_getter('AWS_STORAGE_BUCKET_NAME', path=parent_path),
+                     directory='pg_backups',
+                     region=var_getter('AWS_S3_REGION_NAME', path=parent_path)
+                     )

@@ -2,14 +2,6 @@ import json
 from pathlib import Path
 
 def get_git_parent_dir(path):
-    # cwd = list(Path.cwd().parts) # getting splitted cwd dir
-    # if search_start not in cwd:
-    #     raise Exception(f'No parent dir: {search_start} detected')
-    # for path_part in cwd[::-1]:
-    #     if path_part != search_start:
-    #         cwd.pop()
-    #     break
-
     return Path(path) / '.git'
 
 def get_active_branch_name(path) -> str:

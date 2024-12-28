@@ -17,11 +17,10 @@ BACKUP_DIR=${7:-/backups}        # Optional: Defaults to '/backups' if not provi
 
 # Generate the backup filename
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
-BACKUP_FILE="$FULL_PATH/$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.dump"
+BACKUP_FILE="$FULL_PATH$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.dump"
 echo "$BACKUP_FILE"
 # Ensure the backup directory exists
-
-mkdir -p "$CURRENT_DIR/$BACKUP_DIR"
+mkdir -p "$FULL_PATH$BACKUP_DIR"
 if [ $? -ne 0 ]; then
     echo "Failed to create directory: $BACKUP_DIR"
     exit 1
